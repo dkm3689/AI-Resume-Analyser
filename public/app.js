@@ -15,6 +15,13 @@ const modelPill = document.querySelector("#modelPill");
 
 let selectedFile = null;
 
+const allowedFileTypes = new Set([
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/msword",
+  "text/plain"
+]);
+
 function formatBytes(bytes) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -45,6 +52,10 @@ function setFile(file) {
   fileName.textContent = file.name;
   fileMeta.textContent = `${file.type || "document"} - ${formatBytes(file.size)}`;
   fileRow.hidden = false;
+}
+
+function isSupportedFile(file) {
+  return allowedFileTypes.has(file.type) || /\.(pdf|docx?|txt)$/i.test(file.name);
 }
 
 function fileToBase64(file) {
@@ -163,6 +174,12 @@ dropzone.addEventListener("drop", (event) => {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!selectedFile) return;
+
+  if (!isSupportedFile(selectedFile)) {
+    errorText.textContent = "Supported resume formats are PDF, DOC, DOCX, and TXT.";
+    showState("error");
+    return;
+  }
 
   if (selectedFile.size > 10 * 1024 * 1024) {
     errorText.textContent = "Please upload a file under 10 MB.";

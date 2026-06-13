@@ -128,7 +128,14 @@ async function readJsonBody(req) {
       throw new Error("Resume file is too large. Please upload a file under 10 MB.");
     }
   }
-  return JSON.parse(body || "{}");
+
+  try {
+    return JSON.parse(body || "{}");
+  } catch {
+    const error = new Error("Invalid JSON request body.");
+    error.status = 400;
+    throw error;
+  }
 }
 
 function getOutputText(response) {
