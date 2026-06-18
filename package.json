@@ -2,12 +2,30 @@
   "name": "ai-resume-analyser",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "engines": {
-    "node": ">=18"
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.2",
+    "@google/generative-ai": "^0.24.1",
+    "@types/pdf-parse": "^1.1.5",
+    "groq-sdk": "^1.2.1",
+    "mammoth": "^1.12.0",
+    "next": "^15.3.3",
+    "pdf-parse": "^2.4.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5"
   }
 }
