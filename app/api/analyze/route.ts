@@ -3,6 +3,8 @@ import Groq from "groq-sdk";
 import { PDFParse } from "pdf-parse";
 import { analysisSchema } from "@/lib/schema";
 
+export const maxDuration = 60;
+
 const ALLOWED_TYPES = new Set([
   "application/pdf",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -65,8 +67,9 @@ export async function POST(request: NextRequest) {
       resumeText = value;
     }
   } catch (err) {
+    const name = err instanceof Error ? err.constructor.name : "UnknownError";
     const message = err instanceof Error ? err.message : "Failed to read file.";
-    return NextResponse.json({ error: `Could not extract text: ${message}` }, { status: 422 });
+    return NextResponse.json({ error: `PDF parse error [${name}]: ${message}` }, { status: 422 });
   }
 
   if (!resumeText.trim()) {
@@ -107,7 +110,8 @@ export async function POST(request: NextRequest) {
       usage: response.usage ?? null,
     });
   } catch (err) {
+    const name = err instanceof Error ? err.constructor.name : "UnknownError";
     const message = err instanceof Error ? err.message : "Unexpected server error.";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: `Groq error [${name}]: ${message}` }, { status: 500 });
   }
 }

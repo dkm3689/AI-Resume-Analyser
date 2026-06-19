@@ -53,7 +53,7 @@ export default function Home() {
         {/* Header */}
         <header className="mb-10 text-center">
           <p className="text-xs font-semibold text-violet-600 uppercase tracking-widest mb-2">
-            AI-Powered · OpenAI Structured Outputs
+            AI-Powered · Groq LLaMA 3.3
           </p>
           <h1 className="text-4xl font-bold text-slate-900 mb-3">Resume Analyser</h1>
           <p className="text-slate-500 max-w-lg mx-auto text-sm leading-relaxed">
