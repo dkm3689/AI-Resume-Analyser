@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
-import { PDFParse } from "pdf-parse";
+import { extractText } from "unpdf";
 import { analysisSchema } from "@/lib/schema";
 
 export const maxDuration = 60;
@@ -56,9 +56,8 @@ export async function POST(request: NextRequest) {
   let resumeText: string;
   try {
     if (mimeType === "application/pdf") {
-      const parser = new PDFParse({ data: buffer });
-      const result = await parser.getText();
-      resumeText = result.text;
+      const { text } = await extractText(new Uint8Array(bytes), { mergePages: true });
+      resumeText = Array.isArray(text) ? text.join("\n") : text;
     } else if (mimeType === "text/plain") {
       resumeText = buffer.toString("utf-8");
     } else {
