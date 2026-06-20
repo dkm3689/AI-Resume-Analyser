@@ -89,7 +89,11 @@ export default function DropZone({ file, onFile }: Props) {
         </div>
       ) : (
         <div className="text-center pointer-events-none select-none">
-          <div className="text-3xl text-slate-300 mb-2">+</div>
+          <svg className="mx-auto mb-3 text-slate-300" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
           <p className="font-medium text-slate-600 text-sm">Drop resume here or click to browse</p>
           <p className="text-xs text-slate-400 mt-1">PDF · DOC · DOCX · TXT &nbsp;·&nbsp; max 10 MB</p>
         </div>

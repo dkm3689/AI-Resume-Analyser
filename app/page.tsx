@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import DropZone from "@/components/DropZone";
 import JDInput from "@/components/JDInput";
 import ReportView from "@/components/ReportView";
@@ -8,12 +8,30 @@ import type { AnalyzeResponse } from "@/types";
 
 type Status = "idle" | "analyzing" | "done" | "error";
 
+const LOADING_MESSAGES = [
+  "Reading structure, skills, ATS signals…",
+  "Scoring against ATS criteria…",
+  "Identifying gaps and improvements…",
+  "Writing bullet rewrites…",
+  "Almost done…",
+];
+
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jd, setJD] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [result, setResult] = useState<AnalyzeResponse | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
+
+  useEffect(() => {
+    if (status !== "analyzing") return;
+    setLoadingMsgIdx(0);
+    const id = setInterval(() => {
+      setLoadingMsgIdx((i) => Math.min(i + 1, LOADING_MESSAGES.length - 1));
+    }, 4000);
+    return () => clearInterval(id);
+  }, [status]);
 
   const analyze = useCallback(async () => {
     if (!file) return;
@@ -91,7 +109,7 @@ export default function Home() {
         {status === "analyzing" && (
           <div className="mt-12 text-center">
             <div className="inline-block w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin mb-4" />
-            <p className="text-slate-500 text-sm">Reading structure, skills, ATS signals…</p>
+            <p className="text-slate-500 text-sm">{LOADING_MESSAGES[loadingMsgIdx]}</p>
           </div>
         )}
 

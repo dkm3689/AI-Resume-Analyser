@@ -7,10 +7,17 @@ function scoreColor(score: number) {
 }
 
 function ScoreCard({ label, score }: { label: string; score: number }) {
+  const barColor = score >= 80 ? "bg-emerald-500" : score >= 60 ? "bg-amber-400" : "bg-red-400";
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-6 text-center shadow-sm">
       <div className={`text-5xl font-bold tabular-nums ${scoreColor(score)}`}>{score}</div>
       <div className="text-xs font-medium text-slate-500 mt-2 uppercase tracking-wide">{label}</div>
+      <div className="mt-3 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all duration-700 ${barColor}`}
+          style={{ width: `${score}%` }}
+        />
+      </div>
     </div>
   );
 }
